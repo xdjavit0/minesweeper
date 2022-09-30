@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@cucumber/cucumber": "^8.6.0",
+    "@playwright/test": "^1.26.1",
+    "playwright": "^1.26.1"
+  },
+  "scripts": {
+    "test:e2e": "cucumber-js --require cucumber.conf.js --require *steps.js --parallel 1"
+  }
+}
