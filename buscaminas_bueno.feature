@@ -29,8 +29,8 @@ Examples:
 |oo*-ooo    |3      |2   |
 |oo*-ooo-ooo|3      |3   |
 
-# Scenario: Board default display -> all the squares should be hidden
-# And all the squares should be hidden
+Scenario: Board default display -> all the squares should be hidden
+Then all the squares should be hidden
 
 # Scenario: Board default display -> all the squares shoould be enabled
 # And all the squares should be enabled

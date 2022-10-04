@@ -2,15 +2,19 @@ body {
     background-color: rgb(202, 171, 232);
 }
 #board{
-    display:flex;
+    float: left;
     text-align: center;
 }
-.cells{
+.hiddencells{
     height: 50px;
     width: 50px;
-    background-color: rgb(111, 220, 201);
-    border-top:solid black 3px;
-    border-left:solid black 3px;
-    border-right:solid rgb(73, 130, 120) 3px ;
-    border-bottom:solid rgb(73, 130, 120) 3px;
+    background-color: rgb(122, 131, 245);
+    border-bottom:solid black 3px;
+    border-right:solid black 3px;
+    border-left:solid rgb(73, 130, 120) 3px ;
+    border-top:solid rgb(73, 130, 120) 3px;
+    float: left;
+}
+.reveledcells{
+    background-color: rgb(230, 186, 243);
 }
