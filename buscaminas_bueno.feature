@@ -23,10 +23,10 @@ Scenario Outline: Board default display -> Validating dimensions
 Given the user charge the data "<data>"
 Then the board should have "<columns>" and "<rows>"
 
-Example:
+Examples:
 |data       |columns|rows|
 |o*         |2      |1   |
-|oo*_ooo    |3      |2   |
+|oo*-ooo    |3      |2   |
 |oo*-ooo-ooo|3      |3   |
 
 # Scenario: Board default display -> all the squares should be hidden
