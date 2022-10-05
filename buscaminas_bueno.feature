@@ -45,8 +45,8 @@ Examples:
 | ooo-***  | 3     | 
 | *oo-ooo  | 1     |
 
-# Scenario: Default image display -> be serious
-# Then the image display should have a "serious" face
+Scenario: Default image display -> be serious
+Then the image display should have a "serious" face
 
 # Scenario: Default timer display -> Must be empty
 # Then the timer display should be "empty"

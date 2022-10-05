@@ -44,3 +44,9 @@ Then('the non marked bomb counter display should show the following value: {stri
 	bomb_counter_display= await bomb_counter_display.innerText();
 	expect(bomb_counter_display).toBe(string);
 });
+
+Then('the image display should have a {string} face',async function (string) {
+	let face = await page.locator('#face');
+	face= await face.innerText();
+	expect(face).toBe(string);
+});
