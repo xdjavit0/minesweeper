@@ -13,16 +13,17 @@ Given('the user charge the data {string}',async function (string) {
 	let url_mockdata=url+"?"+string;
 	await page.goto(url_mockdata);
 });
+
 Then('the board should have {string} and {string}',async function (string, string2) {
 	let numero =await  page.locator('.row');
-	let columnas =await numero.count();
-	columnas=await columnas.toString();
+	let row =await numero.count();
+	row=await row.toString();
 
-	numero =await  page.locator("#row0");
-	let rows = await numero.count();
-	rows=await rows.toString();
+	numero =await  page.locator('#row0 div');
+	let column = await numero.count();
+	column=await column.toString();
 
-	expect(columnas,rows).toBe(string,string2);
+	expect(column,row).toBe(string,string2);
 });
 
 Then('all the squares should be hidden',async function () {
@@ -31,5 +32,4 @@ Then('all the squares should be hidden',async function () {
 	let numero2=await  page.locator('.hiddencells');
 	numero2 = await numero2.count();
 	expect(numero).toBe(numero2);
-
-  });
+});
