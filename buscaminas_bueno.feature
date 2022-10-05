@@ -48,8 +48,8 @@ Examples:
 Scenario: Default image display -> be serious
 Then the image display should have a "serious" face
 
-# Scenario: Default timer display -> Must be empty
-# Then the timer display should be "empty"
+Scenario: Default timer display -> Must be empty
+Then the timer display should be "empty"
 
 # Scenario: Revealing a square -> the square should be revealed
 # Given the user charge the data "o*"

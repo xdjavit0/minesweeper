@@ -18,11 +18,13 @@ const default_cell_status = {
     mines_around: 0
 }
 
-function get_mockdata() {
-   let url_array = window.location.search.split("?");
-   mockdata = url_array[1].split("-");
-   rows_in_the_board= mockdata.length;
-   columns_in_the_board=mockdata[0].length;
+function get_mockdata_if_needed() {
+    if (window.location.search.includes("?")) {
+        let url_array = window.location.search.split("?");
+        mockdata = url_array[1].split("-");
+        rows_in_the_board= mockdata.length;
+        columns_in_the_board=mockdata[0].length;
+    }
 }
 
 function place_bombs_mockdata() {
@@ -34,7 +36,6 @@ function place_bombs_mockdata() {
             }   
         }        
     }
-    console.log(array_cells_status);
 }
 
 function place_bombs_random() {
@@ -54,7 +55,6 @@ function update_bomb_counter_display() {
 
 function place_bombs_in_board() {
     if (window.location.search.includes("?")) {
-        get_mockdata();
         place_bombs_mockdata();
     }else{
         place_bombs_random();
@@ -72,7 +72,7 @@ function  create_cells_status(){
     }    
 }
 
-function create_board(){
+function display_board(){
     for (let i = 0; i < rows_in_the_board; i++) {
         rows_div = document.createElement("div");
         rows_div.id= "row" +i.toString();
@@ -97,8 +97,9 @@ function  update_board(){
 
 window.onload = function () {
     bomb_counter_display = document.getElementById("reminingBombCounter");
+    get_mockdata_if_needed();
     create_cells_status();
     place_bombs_in_board();
-    create_board();
+    display_board();
     console.log(array_cells_status);
 };
