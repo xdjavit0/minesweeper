@@ -32,17 +32,18 @@ Examples:
 Scenario: Board default display -> all the squares should be hidden
 Then all the squares should be hidden
 
+# @manual
 # Scenario: Board default display -> all the squares shoould be enabled
 # And all the squares should be enabled
 
-# Scenario Outline: Default counter display, counting the mines in the board
-# Given load mock data <Board>
-# Then the non marked bomb counter display should show the following value: "<Count>"
+Scenario Outline: Default counter display, counting the mines in the board
+Given load mock data "<Board>"
+Then the non marked bomb counter display should show the following value: "<Count>"
 
-# Examples:
-#     | Board    | Count |
-#     | ooo-xxx  | 3     | 
-#     | *oo-ooo  | 1     |
+Examples:
+| Board    | Count |
+| ooo-***  | 3     | 
+| *oo-ooo  | 1     |
 
 # Scenario: Default image display -> be serious
 # Then the image display should have a "serious" face
@@ -59,6 +60,7 @@ Then all the squares should be hidden
 # Given the user charge the data "o*"
 # When the user click the square "1-1" 
 # Then the square "1-1" state should change to:"r"
+
 
 # Scenario: Disabling a revealed cell
 # Given the user charge "oo*"

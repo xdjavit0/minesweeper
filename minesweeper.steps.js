@@ -33,3 +33,14 @@ Then('all the squares should be hidden',async function () {
 	numero2 = await numero2.count();
 	expect(numero).toBe(numero2);
 });
+
+Given('load mock data {string}',async function (string) {
+	let url_mockdata=url+"?"+string;
+	await page.goto(url_mockdata);
+});
+
+Then('the non marked bomb counter display should show the following value: {string}',async function (string) {
+	let bomb_counter_display = await page.locator('#reminingBombCounter');
+	bomb_counter_display= await bomb_counter_display.innerText();
+	expect(bomb_counter_display).toBe(string);
+});
