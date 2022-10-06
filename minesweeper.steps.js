@@ -5,6 +5,14 @@ const { expect, selectors } = require('@playwright/test');
 const url = 'http://127.0.0.1:5500/';
 
 
+
+
+async function buttonClick(buttonId) {
+	await page.click(`[id="${buttonId}"]`, { force: true });
+}
+
+
+
 Given('a user opens the app', async () => {
 	await page.goto(url);
 });
@@ -50,3 +58,37 @@ Then('the image display should have a {string} face',async function (string) {
 	face= await face.innerText();
 	expect(face).toBe(string);
 });
+
+Then('the timer display should be {string}',async function (string) {
+	let timer = await page.locator('#timer');
+	timer= await timer.innerText();
+	expect(timer).toBe(string);
+});
+
+When('the user discover the square {string}',async function (string) {
+	let locator;
+	locator = page.locator(`[id="${string}"]`);
+	await buttonClick('0-0');
+	const pepe =await locator.getAttribute("class");
+	expect(pepe.includes("reveledcells")).toBeTruthy();
+});
+
+Then('the square state should change to:{string}',async function (string) {
+	let locator =await page.locator('[id="0-0"]');
+	locator =await locator.getAttribute("class");
+	expect(locator.includes("reveledcells")).toBeTruthy();
+});
+
+When('the user click the square {string}',async function (string) {
+	let locator;
+	locator = page.locator(`[id="${string}"]`);
+	await buttonClick('0-0');
+	const pepe =await locator.getAttribute("class");
+	expect(pepe.includes("reveledcells")).toBeTruthy();
+});
+
+Then('the square {string} state should change to:{string}',async function (string, string2) {
+	let locator =await page.locator('[id="0-0"]');
+	locator =await locator.getAttribute("class");
+	expect(locator.includes("reveledcells")).toBeTruthy();
+  });

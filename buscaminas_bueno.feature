@@ -10,7 +10,7 @@ Feature: Minesweeper
 # ? --> uncertain symbol that can use the user to mark that probably there is a Bomb
 # number(1-8) --> indicates how many bombs the reveled square is touching
 # number(0) --> dont touch any bomb
-# r --> revealed square
+# reveledcells --> revealed square
 # h --> not revealed square
 
 # "1-2" means row 1 column 2
@@ -49,18 +49,17 @@ Scenario: Default image display -> be serious
 Then the image display should have a "serious" face
 
 Scenario: Default timer display -> Must be empty
-Then the timer display should be "empty"
+Then the timer display should be ""
 
-# Scenario: Revealing a square -> the square should be revealed
-# Given the user charge the data "o*"
-# When the user discover the square "1-1" 
-# Then the square "1-1" state should change to:"r"
+Scenario: Revealing a square -> the square should be revealed
+Given the user charge the data "o*"
+When the user discover the square "0-0" 
+Then the square state should change to:"reveledcells"
 
-# Scenario: Reveal square content with the mouse
-# Given the user charge the data "o*"
-# When the user click the square "1-1" 
-# Then the square "1-1" state should change to:"r"
-
+Scenario: Reveal square content with the mouse
+Given the user charge the data "o*"
+When the user click the square "0-0" 
+Then the square "0-0" state should change to:"reveledcells"
 
 # Scenario: Disabling a revealed cell
 # Given the user charge "oo*"
@@ -85,7 +84,7 @@ Then the timer display should be "empty"
 # Scenario: The user discover a bomb and all the bombs in the board reveal
 # Given the user charge the data "o*******"
 # And the user discover the square "1-2"
-# Then all bombs status should change to "r"
+# Then all bombs status should change to "reveledcells"
 
 # @manual 
 # Scenario Outline: The game ends and the timer stop

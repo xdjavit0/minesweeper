@@ -7,12 +7,13 @@ let columns_div;
 let bomb_counter = 0;
 let mockdata;
 let bomb_counter_display;
+let row_column;
 const total_bombs = 10;
 
 const default_cell_status = {
     row: 0,
     column: 0,
-    iss_revealed:false,
+    is_revealed:false,
     is_mine:false,
     tag:'',
     mines_around: 0
@@ -90,8 +91,19 @@ function display_board(){
     }
 }
 
-function  update_board(){
+document.addEventListener("click", (event) => {
+    let id = event.target.id;
+    row_column = id.split("-");
+    array_cells_status[row_column[0]][row_column[1]].is_revealed = true;
+    console.log(id); 
+    console.log(array_cells_status);
+    reveal_cell_in_board(id)
+});
 
+function  reveal_cell_in_board(id){
+    let cell = document.getElementById(id);
+    cell.classList.add("reveledcells");
+    cell.classList.remove("hiddencells");
 
 }
 
