@@ -86,25 +86,37 @@ function display_board(){
             columns_div.classList.add("hiddencells");
             columns_div.classList.add("cells");
             columns_div.id= id_cell;
+
+            columns_div.addEventListener("click", (event) => {
+                let id = event.target.id;
+                row_column = id.split("-");
+                if (!array_cells_status[row_column[0]][row_column[1]].is_revealed) {
+                    array_cells_status[row_column[0]][row_column[1]].is_revealed = true;
+                    if (!array_cells_status[row_column[0]][row_column[1]].is_mine) {
+                        reveal_normal_cell_in_board(id);
+                    }else{
+                        revel_bomb_cell_in_board(id);
+                    }
+                 
+                }
+            });
             document.getElementById("row"+i.toString()).append(columns_div);
+            
         }
     }
 }
 
-document.addEventListener("click", (event) => {
-    let id = event.target.id;
-    row_column = id.split("-");
-    array_cells_status[row_column[0]][row_column[1]].is_revealed = true;
-    console.log(id); 
-    console.log(array_cells_status);
-    reveal_cell_in_board(id)
-});
+function revel_bomb_cell_in_board(id) {
+    let cell = document.getElementById(id);
+    cell.classList.add("reveledbomb");
+    cell.classList.remove("hiddencells");
+    cell.innerHTML = "&#x1F4A3";
+}
 
-function  reveal_cell_in_board(id){
+function  reveal_normal_cell_in_board(id){
     let cell = document.getElementById(id);
     cell.classList.add("reveledcells");
     cell.classList.remove("hiddencells");
-
 }
 
 window.onload = function () {

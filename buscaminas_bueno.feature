@@ -61,15 +61,10 @@ Given the user charge the data "o*"
 When the user click the square "0-0" 
 Then the square "0-0" state should change to:"reveledcells"
 
-# Scenario: Disabling a revealed cell
-# Given the user charge "oo*"
-# When the user discover the square "1-1"
-# Then the square "1-1" should be disabled
-
-# Scenario:User reveal a bomb square and user lose the game                         
-# Given the user charge the data "o*"
-# When the user discover the square "1-2"
-# Then the user should loose the game
+Scenario:User reveal a bomb square and user lose the game                         
+Given the user charge the data "o*"
+When the user discover the square "0-1"
+Then the user should loose the game
 
 # Scenario: The game is over and the face should be sad
 # Given the user charge the data "o*"
