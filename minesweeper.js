@@ -9,6 +9,7 @@ let mockdata;
 let bomb_counter_display;
 let row_column;
 const total_bombs = 10;
+let game_over = false;
 
 const default_cell_status = {
     row: 0,
@@ -97,6 +98,7 @@ function display_board(){
                     }else{
                         revel_bomb_cell_in_board(id);
                         display_sad_face();
+                        game_over= true;
                     }
                  
                 }
@@ -112,12 +114,27 @@ function revel_bomb_cell_in_board(id) {
     cell.classList.add("reveledbomb");
     cell.classList.remove("hiddencells");
     cell.innerHTML = "&#x1F4A3";
+    all_bombs_are_revealed();
 }
 
-function  reveal_normal_cell_in_board(id){
+function reveal_normal_cell_in_board(id){
     let cell = document.getElementById(id);
     cell.classList.add("reveledcells");
     cell.classList.remove("hiddencells");
+}
+
+function all_bombs_are_revealed() {
+    for (let i = 0; i < rows_in_the_board; i++) {
+        for (j = 0; j < columns_in_the_board; j++){
+            if (array_cells_status[i][j].is_mine) {
+                cell = document.getElementById(i+"-"+j);
+                cell.classList.add("reveledcells");
+                cell.classList.add("reveledbomb");
+                cell.classList.remove("hiddencells");
+                cell.innerHTML = "&#x1F4A3"; 
+            }
+        }
+    }
 }
 
 function display_sad_face() {
