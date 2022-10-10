@@ -96,18 +96,19 @@ function display_board(){
                         reveal_normal_cell_in_board(id);
                     }else{
                         revel_bomb_cell_in_board(id);
+                        display_sad_face();
                     }
                  
                 }
             });
-            document.getElementById("row"+i.toString()).append(columns_div);
-            
+            document.getElementById("row"+i.toString()).append(columns_div);           
         }
     }
 }
 
 function revel_bomb_cell_in_board(id) {
     let cell = document.getElementById(id);
+    cell.classList.add("reveledcells");
     cell.classList.add("reveledbomb");
     cell.classList.remove("hiddencells");
     cell.innerHTML = "&#x1F4A3";
@@ -117,6 +118,11 @@ function  reveal_normal_cell_in_board(id){
     let cell = document.getElementById(id);
     cell.classList.add("reveledcells");
     cell.classList.remove("hiddencells");
+}
+
+function display_sad_face() {
+    let face = document.getElementById("face");
+    face.innerHTML = "sad";
 }
 
 window.onload = function () {

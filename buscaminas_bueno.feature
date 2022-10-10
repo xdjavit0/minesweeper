@@ -66,10 +66,10 @@ Given the user charge the data "o*"
 When the user discover the square "0-1"
 Then the user should loose the game
 
-# Scenario: The game is over and the face should be sad
-# Given the user charge the data "o*"
-# And the user reveal the square "1-2"
-# Then the image display should be "sad" face
+Scenario: The game is over and the face should be sad
+Given the user charge the data "o*"
+When the user click the square "0-1"
+Then the image display should be "sad" face
 
 # Scenario: The user discover a bomb and the bomb highlite
 # Given the user charge the data "o*"

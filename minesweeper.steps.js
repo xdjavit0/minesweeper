@@ -68,7 +68,7 @@ Then('the timer display should be {string}',async function (string) {
 When('the user discover the square {string}',async function (string) {
 	let locator;
 	locator = page.locator(`[id="${string}"]`);
-	await buttonClick('0-0');
+	await buttonClick(string);
 	const pepe =await locator.getAttribute("class");
 	expect(pepe.includes("reveledcells")).toBeTruthy();
 });
@@ -82,7 +82,7 @@ Then('the square state should change to:{string}',async function (string) {
 When('the user click the square {string}',async function (string) {
 	let locator;
 	locator = page.locator(`[id="${string}"]`);
-	await buttonClick('0-0');
+	await buttonClick(string);
 	const pepe =await locator.getAttribute("class");
 	expect(pepe.includes("reveledcells")).toBeTruthy();
 });
@@ -91,4 +91,16 @@ Then('the square {string} state should change to:{string}',async function (strin
 	let locator =await page.locator('[id="0-0"]');
 	locator =await locator.getAttribute("class");
 	expect(locator.includes("reveledcells")).toBeTruthy();
-  });
+});
+
+Then('the image display should be {string} face',async function (string) {
+	let face = await page.locator('#face');
+	face= await face.innerText();
+	expect(face).toBe(string);
+});
+
+Then('the user should loose the game',async function () {
+	let face = await page.locator('#face');
+	face= await face.innerText();
+	expect(face).toBe("sad");
+});

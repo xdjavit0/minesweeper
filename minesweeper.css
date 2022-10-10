@@ -37,7 +37,7 @@ body {
     border-top:solid rgb(73, 130, 120) 3px;
     height: 50px;
     width: 50px;
-    background-color: rgb(212, 91, 111);
+    background-color: rgb(212, 91, 111)!important;
     display: flex;
     justify-content: center;
     font-size: xx-large;
