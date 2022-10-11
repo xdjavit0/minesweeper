@@ -73,13 +73,13 @@ Then the image display should be "sad" face
 
 Scenario: The user discover a bomb and the bomb highlite
 Given the user charge the data "o*"
-When the user reveal the square "0-1"
-Then the bomb in the square "1-2" should be highlighted
+When the user discover the square "0-1"
+Then the bomb in the square "0-1" should be highlighted
 
 Scenario: The user discover a bomb and all the bombs in the board reveal
 Given the user charge the data "o*******"
 When the user discover the square "0-1"
-Then all bombs status should change to "reveledcells"
+Then all bombs status should change to "reveledbomb"
 
 # @manual 
 # Scenario Outline: The game ends and the timer stop

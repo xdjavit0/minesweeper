@@ -104,3 +104,16 @@ Then('the user should loose the game',async function () {
 	face= await face.innerText();
 	expect(face).toBe("sad");
 });
+
+Then('the bomb in the square {string} should be highlighted',async function (string) {
+	let locator;
+	locator = await page.locator(`[id="${string}"]`);
+	locator =await locator.getAttribute("class");
+	expect(locator.includes("reveledbomb")).toBeTruthy();
+  });
+
+Then('all bombs status should change to {string}',async function (string) {
+	let numero = await  page.locator('.reveledbomb');
+	numero = await numero.count();
+	expect(numero).toBe(7);
+  });
