@@ -12,8 +12,8 @@ setDefaultTimeout(6000);
 // launch the browser
 BeforeAll(async () => {
   global.browser = await chromium.launch({
-    headless: false,
-    slowMo: 1000,
+    headless: true,
+    slowMo: 100,
   });
 });
 

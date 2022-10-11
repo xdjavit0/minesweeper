@@ -116,3 +116,8 @@ Then('the square {string} should display {string}',async function (string, strin
 	let locator = await page.locator(`[id="${string}"]`).innerText();
 	expect(locator).toBe(string2);
 });
+
+Then('the square {string} should be empty',async function (string) {
+	let locator = await page.locator(`[id="${string}"]`).innerText();
+	expect(locator).toBe("");
+  });

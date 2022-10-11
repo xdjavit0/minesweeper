@@ -108,10 +108,10 @@ Examples:
 | ***-*o*-**o | 7      |
 | ***-*o*-*** | 8      |
 
-# Scenario: User reveal an square that is not near a bomb and does not have a bomb, the cell should be empty
-# Given the user charge the data "**oo-oooo-oooo-oooo"
-# When the user discover the square "3-3"
-# Then the square should be empty
+Scenario: User reveal an square that is not near a bomb and does not have a bomb, the cell should be empty
+Given the user charge the data "**oo-oooo-oooo-oooo"
+When the user discover the square "2-2"
+Then the square "2-2" should be empty
 
 # Scenario: Revealing an empty square, the adjancent squares should be revealed
 # Given the user charge the data
