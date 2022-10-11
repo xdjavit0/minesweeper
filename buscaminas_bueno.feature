@@ -92,21 +92,21 @@ Then all bombs status should change to "reveledbomb"
 # |1-1   |
 # |1-2   |
 
-# Scenario Outline: User reveal an square that is near a bomb-->should show the number of bombs that is touching
-# Given the user charge the data "<data>"
-# When the user discover the square "2-2"
-# And the square should display "<number>"
+Scenario Outline: User reveal an square that is near a bomb-->should show the number of bombs that is touching
+Given the user charge the data "<data>"
+When the user discover the square "1-1"
+Then the square "1-1" should display "<number>"
 
-# Example:
-# |data       |number|
-# |o*o-ooo-ooo|1     |
-# |o**-ooo-ooo|2     |
-# |***-ooo-ooo|3     |
-# |***-*oo-ooo|4     |
-# |***-*o*-ooo|5     |
-# |***-*o*-*oo|6     |
-# |***-*o*-**o|7     |
-# |***-*o*-***|8     |
+Examples:
+| data        | number |
+| o*o-ooo-ooo | 1      |
+| o**-ooo-ooo | 2      |
+| ***-ooo-ooo | 3      |
+| ***-*oo-ooo | 4      |
+| ***-*o*-ooo | 5      |
+| ***-*o*-*oo | 6      |
+| ***-*o*-**o | 7      |
+| ***-*o*-*** | 8      |
 
 # Scenario: User reveal an square that is not near a bomb and does not have a bomb, the cell should be empty
 # Given the user charge the data "**oo-oooo-oooo-oooo"

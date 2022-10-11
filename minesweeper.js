@@ -10,6 +10,8 @@ let bomb_counter_display;
 let row_column;
 const total_bombs = 10;
 let game_over = false;
+let cell;
+let neighbour_bombs = 0;
 
 const default_cell_status = {
     row: 0,
@@ -108,8 +110,48 @@ function display_board(){
     }
 }
 
+function display_number_in_cell(cell,id) {
+    row_column = id.split("-");
+    if (array_cells_status[row_column[0]][row_column[1]].mines_around != 0) {
+        cell.innerHTML = array_cells_status[row_column[0]][row_column[1]].mines_around;       
+    }
+}
+
+function count_neighbour_bombs() {
+    for (let i = 0; i < array_cells_status.length; i++) {
+        for (let j = 0; j < array_cells_status[i].length; j++) {
+            if (!array_cells_status[i][j].is_mine) {
+                if (j-1 >= 0 && array_cells_status[i][j-1].is_mine) {
+                    array_cells_status[i][j].mines_around = array_cells_status[i][j].mines_around + 1;
+                    }
+                    if (j+1<array_cells_status[i].length && array_cells_status[i][j+1].is_mine) {
+                    array_cells_status[i][j].mines_around = array_cells_status[i][j].mines_around + 1;
+                    }
+                    if (i-1>= 0 && array_cells_status[i-1][j].is_mine) {
+                    array_cells_status[i][j].mines_around = array_cells_status[i][j].mines_around + 1;
+                    }
+                    if (i-1>= 0 && j-1 >= 0 &&array_cells_status[i-1][j-1].is_mine) {
+                    array_cells_status[i][j].mines_around = array_cells_status[i][j].mines_around + 1;
+                    }
+                    if (i-1>= 0 && j+1 <array_cells_status[i].length &&array_cells_status[i-1][j+1].is_mine) {
+                    array_cells_status[i][j].mines_around = array_cells_status[i][j].mines_around + 1;
+                    }
+                    if (i+1< array_cells_status.length && array_cells_status[i+1][j].is_mine) {
+                    array_cells_status[i][j].mines_around = array_cells_status[i][j].mines_around + 1;
+                    }
+                    if (i+1< array_cells_status.length && j-1 >= 0 && array_cells_status[i+1][j-1].is_mine) {
+                    array_cells_status[i][j].mines_around = array_cells_status[i][j].mines_around + 1;
+                    }
+                    if (i+1< array_cells_status.length && j+1 <array_cells_status[i].length && array_cells_status[i+1][j+1].is_mine) {
+                    array_cells_status[i][j].mines_around = array_cells_status[i][j].mines_around + 1;
+                    }
+            }     
+        }      
+    }
+}
+
 function revel_bomb_cell_in_board(id) {
-    let cell = document.getElementById(id);
+    cell = document.getElementById(id);
     cell.classList.add("reveledcells");
     cell.classList.add("reveledbomb");
     cell.classList.remove("hiddencells");
@@ -121,6 +163,7 @@ function reveal_normal_cell_in_board(id){
     let cell = document.getElementById(id);
     cell.classList.add("reveledcells");
     cell.classList.remove("hiddencells");
+    display_number_in_cell(cell,id);
 }
 
 function all_bombs_are_revealed() {
@@ -147,6 +190,7 @@ window.onload = function () {
     get_mockdata_if_needed();
     create_cells_status();
     place_bombs_in_board();
+    count_neighbour_bombs(); 
     display_board();
     console.log(array_cells_status);
 };

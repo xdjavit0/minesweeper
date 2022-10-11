@@ -28,6 +28,9 @@ body {
     height: 50px;
     width: 50px;
     background-color: rgb(230, 186, 243);
+    display: flex;
+    justify-content: center;
+    font-size: xx-large;
 }
 .reveledbomb{
     float: left;
