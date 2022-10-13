@@ -12,6 +12,8 @@ const total_bombs = 10;
 let game_over = false;
 let cell;
 let neighbour_bombs = 0;
+let interruptor = false;
+let bomb_logo = "&#x1F4A3";
 
 const default_cell_status = {
     row: 0,
@@ -114,7 +116,48 @@ function display_number_in_cell(cell,id) {
     row_column = id.split("-");
     if (array_cells_status[row_column[0]][row_column[1]].mines_around != 0) {
         cell.innerHTML = array_cells_status[row_column[0]][row_column[1]].mines_around;       
+    }else if (interruptor == false){
+        reveal_around_cero(row_column[0],row_column[1]);
     }
+}
+
+function reveal_around_cero(i,j) {
+    i = parseInt(i);
+    j = parseInt(j);
+    if (j-1 >= 0 && !array_cells_status[i][(j-1)].is_revealed) {
+        array_cells_status[i][(j-1)].is_revealed = true;
+        reveal_normal_cell_in_board(i+"-"+(j-1));
+    }
+    if (j+1<array_cells_status[i].length && !array_cells_status[i][(j+1)].is_revealed) {
+        array_cells_status[i][(j+1)].is_revealed = true;
+        reveal_normal_cell_in_board(i+"-"+(j+1));
+    }
+    if (i-1>= 0 && !array_cells_status[(i-1)][j].is_revealed) {
+        array_cells_status[(i-1)][j].is_revealed = true;
+        reveal_normal_cell_in_board((i-1)+"-"+j);
+    }
+    if (i-1>= 0 && j-1 >= 0 && !array_cells_status[(i-1)][(j-1)].is_revealed) {
+        array_cells_status[(i-1)][(j-1)].is_revealed = true;
+        reveal_normal_cell_in_board((i-1)+"-"+(j-1));
+    }
+    if (i-1>= 0 && j+1 <array_cells_status[i].length && !array_cells_status[(i-1)][(j+1)].is_revealed) {
+        array_cells_status[(i-1)][(j+1)].is_revealed = true;
+        reveal_normal_cell_in_board((i-1)+"-"+(j+1));
+
+    }
+    if (i+1< array_cells_status.length && !array_cells_status[(i+1)][j].is_revealed) {
+        array_cells_status[(i+1)][j].is_revealed = true;
+        reveal_normal_cell_in_board((i+1)+"-"+(j));
+    }
+    if (i+1< array_cells_status.length && j-1 >= 0 && !array_cells_status[(i+1)][(j-1)].is_revealed) {
+        array_cells_status[(i+1)][(j-1)].is_revealed = true;
+        reveal_normal_cell_in_board((i+1)+"-"+(j-1));
+    }
+    if (i+1< array_cells_status.length && j+1 <array_cells_status[i].length && !array_cells_status[(i+1)][(j+1)].is_revealed) {
+        array_cells_status[(i+1)][(j+1)].is_revealed = true;
+        reveal_normal_cell_in_board((i+1)+"-"+(j+1));
+    }
+    console.log(array_cells_status);
 }
 
 function count_neighbour_bombs() {
@@ -155,7 +198,7 @@ function revel_bomb_cell_in_board(id) {
     cell.classList.add("reveledcells");
     cell.classList.add("reveledbomb");
     cell.classList.remove("hiddencells");
-    cell.innerHTML = "&#x1F4A3";
+    cell.innerHTML = bomb_logo;
     all_bombs_are_revealed();
 }
 

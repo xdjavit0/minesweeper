@@ -113,53 +113,46 @@ Given the user charge the data "**oo-oooo-oooo-oooo"
 When the user discover the square "2-2"
 Then the square "2-2" should be empty
 
-# Scenario: Revealing an empty square, the adjancent squares should be revealed
-# Given the user charge the data
-# """
-# ooo
-# ooo
-# ooo
-# ***
-# """
-# When the user click the square "2-2"
-# Then the board should look like:
-# """
-# rrr
-# rrr
-# 232
-# hhh
-# """
+Scenario: Revealing an empty square, the adjancent squares should be revealed
+Given the user charge the data "ooo-ooo-ooo-***"
+When the user click the square "1-1"
+Then the square "0-0" should be empty
+And the square "0-1" should be empty
+And the square "0-2" should be empty
+And the square "1-0" should be empty
+And the square "1-1" should be empty
+And the square "1-2" should be empty
+And the square "2-0" should be "2"
+And the square "2-1" should be "3"
+And the square "2-2" should be "2"
 
-# Scenario: An empty square revealed by a neightbour square, the adjancent squares should be revealed //
-# Given The user charge the data
-# """
-# oooooo
-# *oooo*
-# *oooo*
-# *oooo*
-# ******
-# """
-# When the user click the square "3-3"
-# Then it will show 
-# """
-# 11rr11
-# h2rr2h
-# h3rr3h
-# h5335h
-# hhhhhh
-# """
 
-# Scenario Outline: User mark a mined bomb
-# Given the user losad the data "o**-ooo-ooo"
-# And the square "1-2" is "<state>"
-# When the user tag the "1-2"
-# Then the visual data should change to "<visual>"
 
-# Example:
-# |state   |visual  |
-# |unmarked|!       |
-# |!       |?       |
-# |?       |unmarked|
+
+Scenario: An empty square revealed by a neightbour square, the adjancent squares should be revealed //
+Given the user charge the data "*****-*ooo*-*ooo*-*ooo*-*****"
+When the user click the square "2-2"
+Then the square "1-1" should be "5"
+And the square "1-2" should be "3"
+And the square "1-3" should be "5"
+And the square "2-1" should be "3"
+And the square "2-2" should be empty
+And the square "2-3" should be "3"
+And the square "3-1" should be "5"
+And the square "3-2" should be "3"
+And the square "3-3" should be "5"
+
+Scenario Outline: User mark a mined bomb
+Given the user losad the data "o**-ooo-ooo"
+And the square "1-2" is "<state>"
+When the user tag the "1-2"
+Then the visual data should change to "<visual>"
+
+Examples:
+|state   |visual  |
+|        |!       |
+|!       |?       |
+|?       |        |
 
 # Scenario outline: User mark a bomb and bomb counter substraction
 # Given the user charge the data """o***"""

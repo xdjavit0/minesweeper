@@ -36,11 +36,11 @@ body {
     float: left;
     border-bottom:solid black 3px;
     border-right:solid black 3px;
-    border-left:solid rgb(73, 130, 120) 3px ;
-    border-top:solid rgb(73, 130, 120) 3px;
+    border-left:solid rgb(255, 0, 0) 3px ;
+    border-top:solid rgb(255, 0, 0) 3px;
     height: 50px;
     width: 50px;
-    background-color: rgb(212, 91, 111)!important;
+    background-color: rgb(255, 0, 43);
     display: flex;
     justify-content: center;
     font-size: xx-large;
