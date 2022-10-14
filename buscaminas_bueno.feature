@@ -143,9 +143,9 @@ And the square "3-2" should be "3"
 And the square "3-3" should be "5"
 
 Scenario Outline: User mark a mined bomb
-Given the user losad the data "o**-ooo-ooo"
-And the square "1-2" is "<state>"
-When the user tag the "1-2"
+Given the user charge the data "o**-ooo-ooo"
+And the square "0-1" is "<state>"
+When the user tag the "0-1"
 Then the visual data should change to "<visual>"
 
 Examples:
@@ -154,38 +154,29 @@ Examples:
 |!       |?       |
 |?       |        |
 
-# Scenario outline: User mark a bomb and bomb counter substraction
-# Given the user charge the data """o***"""
-# And  the counter is in "3"
-# When the user place a mark in "1-2" as mined
-# Then the counter should display 
 
+Scenario: User mark a bomb and bomb counter substraction
+Given the user charge the data "o***"
+When the user tag the "0-1"
+Then the counter should display "2"
 
-# Scenario: User mark bombs incorrectly and counter substraction in negative
-# Given the user charge the data """o***ooo"""
-# And the user mark as mined "1-5","1-2" and "1-4"
-# And the counter is in "0"
-# When the user mark the square "1-1" with "!"
-# Then the counter should display "-1"
+Scenario: User mark bombs incorrectly and counter substraction in negative
+Given the user charge the data "o***ooo"
+And the user mark as mined "0-4","0-1" and "0-3"
+When the user tag the "0-0"
+Then the counter should display "-1"
 
-# Scenario: All bombs marked correctly and the user wins the game 
-# Given the user charge the data "o*"
-# When mark with "!" the square "1-2"
-# Then the user wins
+Scenario: The user reveal squares and the rest of the squares are bombs --> the user should win
+Given the user charge the data "o*"
+When the user click the square "0-0"
+Then The "0-1" should be marked with !
+And the user should win
 
-# Scenario: The user reveal squares and the rest of the squares are bombs --> the user should win
-# Given the user charge the data "o*"
-# When the user reveal the square "1-1"
-# Then The bombs are marked with "!"
-# And the user should win
-
-# Scenario: There are no bombs in the board --> the user should win
-# Given the user charge the data "o"
-# Then the user should win
-
-# Scenario: User wins and smiling face apears
-# Given the user won
-# Then the image should display an "smiling" face
+@current
+Scenario: User wins and happy face apears
+Given the user charge the data "o*"
+And the user click the square "0-0"
+Then the image should display an "happy" face
 
 # @manual
 # Scenario: User wins and timer stop counting

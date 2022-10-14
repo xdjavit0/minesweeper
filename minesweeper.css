@@ -48,3 +48,11 @@ body {
     justify-content: center;
     font-size: xx-large;
 }
+.noclick{
+    pointer-events: none !important;
+}
+#face{
+    color: black;
+    text-decoration: none;
+    cursor:pointer;
+}

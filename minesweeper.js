@@ -8,7 +8,7 @@ let bomb_counter = 0;
 let mockdata;
 let bomb_counter_display;
 let row_column;
-const total_bombs = 10;
+let total_bombs = 10;
 let game_over = false;
 let cell;
 let neighbour_bombs = 0;
@@ -16,6 +16,9 @@ let interruptor = false;
 let bomb_logo = "&#x1F4A3";
 let flag_logo = "&#x1F6A9";
 let questionmark_logo = "&#x2753";
+let cells_revealed =0;
+let segundos = 0;
+let primera_celda = true;
 
 const default_cell_status = {
     row: 0,
@@ -41,6 +44,7 @@ function place_bombs_mockdata() {
             if (mockdata[i].charAt(j)=='*') {
                 array_cells_status[i][j].is_mine=true;
                 bomb_counter ++;
+                total_bombs = bomb_counter;
             }   
         }        
     }
@@ -106,7 +110,8 @@ function display_board(){
                         display_sad_face();
                         game_over= true;
                     }
-                 
+                    check_game_status();
+                   
                 }
             });
 
@@ -122,12 +127,61 @@ function display_board(){
         }
     }
 }
+
+function check_game_status() {
+    if (cells_revealed == rows_in_the_board*columns_in_the_board-total_bombs) {
+        game_over = true
+    }
+    if (primera_celda) {
+        window.setInterval(function(){ 
+            if (!game_over) { 
+            document.getElementById("timer").innerHTML = segundos;
+            segundos++;
+            primera_celda = false;
+            }
+        },1000);
+    }
+
+
+    if (game_over) {
+        if (cells_revealed == rows_in_the_board*columns_in_the_board-total_bombs) {
+            document.getElementById("face").innerHTML = "happy";
+            tag_all_mines();
+            disable_click();
+        }
+        else{
+            disable_click();
+        }
+    }
+    
+}
+
+function disable_click() {
+    cell = document.getElementById("board");
+    cell.classList.add("noclick");
+}
+
+function tag_all_mines() {
+    for (let i = 0; i < rows_in_the_board; i++) {
+        for (j = 0; j < columns_in_the_board; j++){
+            if (array_cells_status[i][j].is_mine) {
+                cell = document.getElementById(i+"-"+j);
+                cell.innerHTML = flag_logo; 
+            }
+        }
+    }
+}
+
 function place_tag(id) {
     row_column = id.split("-");
     if (array_cells_status[row_column[0]][row_column[1]].tag == "") {
         array_cells_status[row_column[0]][row_column[1]].tag = "flag";
+        bomb_counter = bomb_counter -1;
+        update_bomb_counter_display();
     }else if (array_cells_status[row_column[0]][row_column[1]].tag == "flag") {
         array_cells_status[row_column[0]][row_column[1]].tag = "questionmark";
+        bomb_counter = bomb_counter + 1;
+        update_bomb_counter_display();
     }else {
         array_cells_status[row_column[0]][row_column[1]].tag = "";
     }
@@ -141,7 +195,7 @@ function display_tag(id,tag){
     }else if (tag=="flag") {
         cell.innerHTML = flag_logo;
     }else {
-        cell.innerHTML = "&#x20";
+        cell.innerHTML = "";
     }
 }
 
@@ -151,6 +205,10 @@ function display_number_in_cell(cell,id) {
         cell.innerHTML = array_cells_status[row_column[0]][row_column[1]].mines_around;       
     }else{
         if (array_cells_status[row_column[0]][row_column[1]].tag != "") {
+            if (array_cells_status[row_column[0]][row_column[1]].tag == "flag") {
+                bomb_counter = bomb_counter + 1;
+                update_bomb_counter_display();
+            }
             array_cells_status[row_column[0]][row_column[1]].tag = ""
             display_tag(id,array_cells_status[row_column[0]][row_column[1]].tag);
         }
@@ -243,6 +301,7 @@ function reveal_normal_cell_in_board(id){
     cell.classList.add("reveledcells");
     cell.classList.remove("hiddencells");
     display_number_in_cell(cell,id);
+    cells_revealed++;
 }
 
 function all_bombs_are_revealed() {
@@ -262,6 +321,19 @@ function all_bombs_are_revealed() {
 function display_sad_face() {
     let face = document.getElementById("face");
     face.innerHTML = "sad";
+}
+
+function delete_board() {
+    for (let i = 0; i < rows_in_the_board; i++) {
+        for (j = 0; j < columns_in_the_board; j++){
+            document.getElementById(i+"-"+j).remove();
+        }
+    }
+}
+function reset_clicking_face() {
+    document.getElementById("face").addEventListener("click", (event) => {
+        delete_board();
+    });
 }
 
 window.onload = function () {

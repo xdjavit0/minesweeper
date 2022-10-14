@@ -11,7 +11,9 @@ async function buttonClick(buttonId) {
 	await page.click(`[id="${buttonId}"]`, { force: true });
 }
 
-
+async function buttonRightClick(buttonId) {
+	await page.locator(`[id="${buttonId}"]`).click({ button: "right" });
+  }
 
 Given('a user opens the app', async () => {
 	await page.goto(url);
@@ -125,4 +127,58 @@ Then('the square {string} should be empty',async function (string) {
 Then('the square {string} should be {string}',async function (string, string2) {
 	let locator = await page.locator(`[id="${string}"]`).innerText();
 	expect(locator).toBe(string2);
-  });
+});
+
+Given('the square {string} is {string}',async function (string, string2) {
+	if (string2 == "!") {
+		await buttonRightClick(string);
+	}else if (string2 == "?") {
+		await buttonRightClick(string);
+		await buttonRightClick(string);
+	}
+});
+
+When('the user tag the {string}',async function (string) {
+	await buttonRightClick(string);
+});
+
+Then('the visual data should change to {string}',async function (string) {
+	let locator = await page.locator(`[id="0-1"]`).innerText();
+	let tag;
+	if (string == "!") {
+		tag = "\u{1F6A9}";
+	}else if (string == "?") {
+		tag = "\u{2753}";
+	}else{
+		tag = "";
+	}
+	expect(locator).toBe(tag);
+});
+
+Then('the counter should display {string}',async function (string) {
+	let locator = await page.locator(`[id="reminingBombCounter"]`).innerText();
+	expect(locator).toBe(string);
+});
+
+Given('the user mark as mined {string},{string} and {string}',async function (string, string2, string3) {
+	await buttonRightClick(string);
+	await buttonRightClick(string2);
+	await buttonRightClick(string3);
+});
+
+Then('The {string} should be marked with !',async function (string) {
+	let locator = await page.locator(`[id="${string}"]`).innerText();
+	expect(locator).toBe("\u{1F6A9}");
+});
+
+Then('the user should win',async function () {
+	let face = await page.locator('#face');
+	face= await face.innerText();
+	expect(face).toBe("happy");
+});
+
+Then('the image should display an {string} face',async function (string) { 
+	let face = await page.locator('#face');
+	face= await face.innerText();
+	expect(face).toBe("happy");
+});
