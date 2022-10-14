@@ -15,6 +15,9 @@ body {
     border-top:solid rgb(73, 130, 120) 3px;
     float: left;
     cursor:pointer;
+    display: flex;
+    justify-content: center;
+    font-size: xx-large;
 }
 .hiddencells:hover{
     background-color: rgb(161, 164, 219); ;

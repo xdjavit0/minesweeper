@@ -14,13 +14,15 @@ let cell;
 let neighbour_bombs = 0;
 let interruptor = false;
 let bomb_logo = "&#x1F4A3";
+let flag_logo = "&#x1F6A9";
+let questionmark_logo = "&#x2753";
 
 const default_cell_status = {
     row: 0,
     column: 0,
     is_revealed:false,
     is_mine:false,
-    tag:'',
+    tag:"",
     mines_around: 0
 }
 
@@ -107,8 +109,39 @@ function display_board(){
                  
                 }
             });
+
+            columns_div.addEventListener("contextmenu", (event) => {
+                event.preventDefault();
+                let id = event.target.id;
+                row_column = id.split("-");
+                if (!array_cells_status[row_column[0]][row_column[1]].is_revealed) {
+                    place_tag(id)
+                }
+            });
             document.getElementById("row"+i.toString()).append(columns_div);           
         }
+    }
+}
+function place_tag(id) {
+    row_column = id.split("-");
+    if (array_cells_status[row_column[0]][row_column[1]].tag == "") {
+        array_cells_status[row_column[0]][row_column[1]].tag = "flag";
+    }else if (array_cells_status[row_column[0]][row_column[1]].tag == "flag") {
+        array_cells_status[row_column[0]][row_column[1]].tag = "questionmark";
+    }else {
+        array_cells_status[row_column[0]][row_column[1]].tag = "";
+    }
+    display_tag(id,array_cells_status[row_column[0]][row_column[1]].tag);
+}
+
+function display_tag(id,tag){
+    cell = document.getElementById(id);
+    if (tag=="questionmark") {
+        cell.innerHTML = questionmark_logo;
+    }else if (tag=="flag") {
+        cell.innerHTML = flag_logo;
+    }else {
+        cell.innerHTML = "&#x20";
     }
 }
 
@@ -116,7 +149,11 @@ function display_number_in_cell(cell,id) {
     row_column = id.split("-");
     if (array_cells_status[row_column[0]][row_column[1]].mines_around != 0) {
         cell.innerHTML = array_cells_status[row_column[0]][row_column[1]].mines_around;       
-    }else if (interruptor == false){
+    }else{
+        if (array_cells_status[row_column[0]][row_column[1]].tag != "") {
+            array_cells_status[row_column[0]][row_column[1]].tag = ""
+            display_tag(id,array_cells_status[row_column[0]][row_column[1]].tag);
+        }
         reveal_around_cero(row_column[0],row_column[1]);
     }
 }
@@ -143,7 +180,6 @@ function reveal_around_cero(i,j) {
     if (i-1>= 0 && j+1 <array_cells_status[i].length && !array_cells_status[(i-1)][(j+1)].is_revealed) {
         array_cells_status[(i-1)][(j+1)].is_revealed = true;
         reveal_normal_cell_in_board((i-1)+"-"+(j+1));
-
     }
     if (i+1< array_cells_status.length && !array_cells_status[(i+1)][j].is_revealed) {
         array_cells_status[(i+1)][j].is_revealed = true;
