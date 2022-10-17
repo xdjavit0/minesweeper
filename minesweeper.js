@@ -1,23 +1,12 @@
+let bomb_counter_display = document.getElementById("reminingBombCounter");
 let columns_in_the_board = 10;
 let rows_in_the_board = 10;
 let array_cells_status;
-let id_cell;
-let rows_div;
-let columns_div;
 let bomb_counter = 0;
-let mockdata;
-let bomb_counter_display;
-let row_column;
 let total_bombs = 10;
 let game_over = false;
-let cell;
-let bomb_emoji = "&#x1F4A3";
-let flag_logo = "&#x1F6A9";
-let questionmark_logo = "&#x2753";
-let cells_revealed =0;
-let segundos = 0;
+let seconds = 0;
 let primera_celda = true;
-let timer = true
 
 const default_cell_status = {
     row: 0,
@@ -31,13 +20,16 @@ const default_cell_status = {
 function get_mockdata_if_needed() {
     if (window.location.search.includes("?")) {
         let url_array = window.location.search.split("?");
-        mockdata = url_array[1].split("-");
+        let mockdata = url_array[1].split("-");
         rows_in_the_board= mockdata.length;
         columns_in_the_board=mockdata[0].length;
+        return mockdata;
+    }else{
+        return[];
     }
 }
 
-function place_bombs_mockdata() {
+function place_bombs_mockdata(mockdata) {
     for (let i = 0; i < mockdata.length; i++) {
         for (let j = 0; j < mockdata[i].length; j++) {
             if (mockdata[i].charAt(j)=='*') {
@@ -64,9 +56,9 @@ function update_bomb_counter_display() {
     bomb_counter_display.innerHTML=bomb_counter;
 }
 
-function place_bombs_in_board() {
-    if (window.location.search.includes("?")) {
-        place_bombs_mockdata();
+function place_bombs_in_board(mockdata) {
+    if (mockdata != []) {
+        place_bombs_mockdata(mockdata);
     }else{
         place_bombs_random();
     }
@@ -84,77 +76,74 @@ function  create_cells_status(){
 }
 
 function create_board(){
+    
     for (let i = 0; i < rows_in_the_board; i++) {
-        rows_div = document.createElement("div");
+        let rows_div = document.createElement("div");
         rows_div.id= "row" +i.toString();
         rows_div.classList.add("row");
         document.getElementById("board").append(rows_div);
 
         for (let j = 0; j < columns_in_the_board; j++) {
-            columns_div= document.createElement("div");
-            id_cell = i.toString()+"-"+j.toString();
+            let columns_div= document.createElement("div");
+            let id_cell = i.toString()+"-"+j.toString();
             columns_div.classList.add("hiddencells");
             columns_div.classList.add("cells");
             columns_div.id= id_cell;
             document.getElementById("row"+i.toString()).append(columns_div);     
-            reveal_a_cell();
-            tag_a_cell();         
+            reveal_a_cell(columns_div);
+            tag_a_cell(columns_div);         
         }
     }
 }
 
-function tag_a_cell(params) {
+function tag_a_cell(columns_div) {
     columns_div.addEventListener("contextmenu", (event) => {
         event.preventDefault();
         let id = event.target.id;
-        row_column = id.split("-");
+        let row_column = id.split("-");
         if (!array_cells_status[row_column[0]][row_column[1]].is_revealed) {
             place_tag(id)
         }
     });
 }
-function reveal_a_cell() {
+function reveal_a_cell(columns_div) {
     columns_div.addEventListener("click", (event) => {
         let id = event.target.id;
-        row_column = id.split("-");
+        let row_column = id.split("-");
         if (!array_cells_status[row_column[0]][row_column[1]].is_revealed) {
             array_cells_status[row_column[0]][row_column[1]].is_revealed = true;
             if (!array_cells_status[row_column[0]][row_column[1]].is_mine) {
                 reveal_normal_cell_in_board(id);
+                check_game_status();
             }else{
                 revel_bomb_cell_in_board(id);
                 display_sad_face();
                 game_over= true;
+                disable_click();
             }
-            check_game_status();
-           
         }
     }); 
 }
 
-function check_game_status() {
+function check_game_status(row,column) {
     timer = true;
+    let cells_revealed = get_reveled_cells();
     if (cells_revealed == rows_in_the_board*columns_in_the_board-total_bombs) {
         game_over = true
     }
     if (primera_celda) {
         window.setInterval(function(){ 
             if (!game_over && timer) { 
-                document.getElementById("timer").innerHTML = segundos;
-                segundos++;
+                document.getElementById("timer").innerHTML = seconds;
+                seconds++;
                 primera_celda = false;
             }
         },1000);
     }
-
-
     if (game_over) {
         if (cells_revealed == rows_in_the_board*columns_in_the_board-total_bombs) {
             document.getElementById("face").innerHTML = "happy";
             tag_all_mines();
-            disable_click();
-        }
-        else{
             disable_click();
         }
     }
@@ -162,27 +151,38 @@ function check_game_status() {
 }
 
 function disable_click() {
-    cell = document.getElementById("board");
+    let cell = document.getElementById("board");
     cell.classList.add("noclick");
 }
 function enable_click() {
-    cell = document.getElementById("board");
+    let cell = document.getElementById("board");
     cell.classList.remove("noclick");
+}
+function get_reveled_cells() {
+    let reveled_cells = 0
+    for (let i = 0; i < rows_in_the_board; i++) {
+        for (j = 0; j < columns_in_the_board; j++){
+            if (array_cells_status[i][j].is_revealed) {
+                reveled_cells++;
+            }
+        }
+    }
+    return reveled_cells;
 }
 
 function tag_all_mines() {
     for (let i = 0; i < rows_in_the_board; i++) {
         for (j = 0; j < columns_in_the_board; j++){
             if (array_cells_status[i][j].is_mine) {
-                cell = document.getElementById(i+"-"+j);
-                cell.innerHTML = flag_logo; 
+                let cell = document.getElementById(i+"-"+j);
+                cell.innerHTML = "&#x1F6A9"; 
             }
         }
     }
 }
 
 function place_tag(id) {
-    row_column = id.split("-");
+    let row_column = id.split("-");
     if (array_cells_status[row_column[0]][row_column[1]].tag == "") {
         array_cells_status[row_column[0]][row_column[1]].tag = "flag";
         bomb_counter = bomb_counter -1;
@@ -198,26 +198,26 @@ function place_tag(id) {
 }
 
 function display_tag(id,tag){
-    cell = document.getElementById(id);
+    let cell = document.getElementById(id);
     if (tag=="questionmark") {
-        cell.innerHTML = questionmark_logo;
+        cell.innerHTML = "&#x2753";
     }else if (tag=="flag") {
-        cell.innerHTML = flag_logo;
+        cell.innerHTML = "&#x1F6A9";
     }else {
         cell.innerHTML = "";
     }
 }
 
 function display_number_in_cell(cell,id) {
-    row_column = id.split("-");
+    let row_column = id.split("-");
+    if (array_cells_status[row_column[0]][row_column[1]].tag == "flag") {
+        bomb_counter = bomb_counter + 1;
+        update_bomb_counter_display();
+    }
     if (array_cells_status[row_column[0]][row_column[1]].mines_around != 0) {
         cell.innerHTML = array_cells_status[row_column[0]][row_column[1]].mines_around;       
     }else{
         if (array_cells_status[row_column[0]][row_column[1]].tag != "") {
-            if (array_cells_status[row_column[0]][row_column[1]].tag == "flag") {
-                bomb_counter = bomb_counter + 1;
-                update_bomb_counter_display();
-            }
             array_cells_status[row_column[0]][row_column[1]].tag = ""
             display_tag(id,array_cells_status[row_column[0]][row_column[1]].tag);
         }
@@ -296,11 +296,11 @@ function count_neighbour_bombs() {
 }
 
 function revel_bomb_cell_in_board(id) {
-    cell = document.getElementById(id);
+    let cell = document.getElementById(id);
     cell.classList.add("reveledcells");
     cell.classList.add("reveledbomb");
     cell.classList.remove("hiddencells");
-    cell.innerHTML = bomb_emoji;
+    cell.innerHTML = "&#x1F4A3";
     all_bombs_are_revealed();
 }
 
@@ -309,14 +309,13 @@ function reveal_normal_cell_in_board(id){
     cell.classList.add("reveledcells");
     cell.classList.remove("hiddencells");
     display_number_in_cell(cell,id);
-    cells_revealed++;
 }
 
 function all_bombs_are_revealed() {
     for (let i = 0; i < rows_in_the_board; i++) {
         for (j = 0; j < columns_in_the_board; j++){
             if (array_cells_status[i][j].is_mine) {
-                cell = document.getElementById(i+"-"+j);
+                let cell = document.getElementById(i+"-"+j);
                 cell.classList.add("reveledcells");
                 cell.classList.add("reveledbomb");
                 cell.classList.remove("hiddencells");
@@ -342,17 +341,16 @@ function delete_board() {
 function reset_minesweeper() {
     face = document.getElementById("face");
     face.innerHTML = "serious";
-    segundos = 0;
-    document.getElementById("timer").innerHTML = segundos;
+    seconds = 0;
+    document.getElementById("timer").innerHTML = seconds;
     bomb_counter = 0;
     game_over = false;
-    cells_revealed = 0;
     timer = false;
     enable_click();
     delete_board();
-    get_mockdata_if_needed();
+    let mockdata = get_mockdata_if_needed();
     create_cells_status();
-    place_bombs_in_board();
+    place_bombs_in_board(mockdata);
     count_neighbour_bombs(); 
     create_board();
     reset_clicking_face();
@@ -365,10 +363,9 @@ function reset_clicking_face() {
 }
 
 window.onload = function () {
-    bomb_counter_display = document.getElementById("reminingBombCounter");
-    get_mockdata_if_needed();
+    let mockdata = get_mockdata_if_needed();
     create_cells_status();
-    place_bombs_in_board();
+    place_bombs_in_board(mockdata);
     count_neighbour_bombs(); 
     create_board();
     reset_clicking_face();
