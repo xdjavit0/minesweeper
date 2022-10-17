@@ -172,7 +172,6 @@ When the user click the square "0-0"
 Then The "0-1" should be marked with !
 And the user should win
 
-@current
 Scenario: User wins and happy face apears
 Given the user charge the data "o*"
 And the user click the square "0-0"
@@ -190,25 +189,26 @@ Then the image should display an "happy" face
 # Then timer display shoul be "0"
 # And add a second to the counter every second passed
 
-# Scenario: The user reset the board
-# Giventhe user charge the data "o***oo"
-# And the user mark "1-2" and "1-3"
-# And reveal "1-5"
-# When the user press on the image display
-# Then the board should change to default board
+Scenario: The user reset the board
+Giventhe user charge the data "o***oo"
+And the user tag the "0-1"
+And the user click the square "0-4"
+When the user press on the image display
+Then the board should change to default board
 
 # Scenario: The user reset the non marked bomb counter
 # Given the user charge the data "o*****"
-# And the user mark "1-2" and "1-3"
-# And non marked bomb counter is be "3"
+# And the user tag the "0-2"
 # When the user press on the image display
 # Then the non marked non marked bomb counter should be "5"
 
 # Scenario: The user reset the face image --> should be serious
-# Given the face is not "serious" face
+# Given # Given the user charge the data "o*****"
+# And the user click the square "0-4"
 # When the user press on the image display
 # Then the face image should be "serious" face
 
+# @manual
 # Scenario: The user reset the timer
 # Given the timer is not "empty"
 # When the user press on the image display

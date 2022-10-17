@@ -19,6 +19,7 @@ let questionmark_logo = "&#x2753";
 let cells_revealed =0;
 let segundos = 0;
 let primera_celda = true;
+let timer = true
 
 const default_cell_status = {
     row: 0,
@@ -129,15 +130,16 @@ function display_board(){
 }
 
 function check_game_status() {
+    timer = true;
     if (cells_revealed == rows_in_the_board*columns_in_the_board-total_bombs) {
         game_over = true
     }
     if (primera_celda) {
         window.setInterval(function(){ 
-            if (!game_over) { 
-            document.getElementById("timer").innerHTML = segundos;
-            segundos++;
-            primera_celda = false;
+            if (!game_over && timer) { 
+                document.getElementById("timer").innerHTML = segundos;
+                segundos++;
+                primera_celda = false;
             }
         },1000);
     }
@@ -159,6 +161,10 @@ function check_game_status() {
 function disable_click() {
     cell = document.getElementById("board");
     cell.classList.add("noclick");
+}
+function enable_click() {
+    cell = document.getElementById("board");
+    cell.classList.remove("noclick");
 }
 
 function tag_all_mines() {
@@ -251,7 +257,6 @@ function reveal_around_cero(i,j) {
         array_cells_status[(i+1)][(j+1)].is_revealed = true;
         reveal_normal_cell_in_board((i+1)+"-"+(j+1));
     }
-    console.log(array_cells_status);
 }
 
 function count_neighbour_bombs() {
@@ -330,9 +335,28 @@ function delete_board() {
         }
     }
 }
+
+function reset_minesweeper() {
+    segundos = 0;
+    document.getElementById("timer").innerHTML = segundos;
+    bomb_counter = 0;
+    game_over = false;
+    neighbour_bombs = 0;
+    cells_revealed = 0;
+    timer = false;
+    enable_click();
+    delete_board();
+    get_mockdata_if_needed();
+    create_cells_status();
+    place_bombs_in_board();
+    count_neighbour_bombs(); 
+    display_board();
+    reset_clicking_face();
+}
+
 function reset_clicking_face() {
     document.getElementById("face").addEventListener("click", (event) => {
-        delete_board();
+        reset_minesweeper();
     });
 }
 
@@ -343,5 +367,6 @@ window.onload = function () {
     place_bombs_in_board();
     count_neighbour_bombs(); 
     display_board();
+    reset_clicking_face();
     console.log(array_cells_status);
 };
