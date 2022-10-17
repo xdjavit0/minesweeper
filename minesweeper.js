@@ -11,9 +11,7 @@ let row_column;
 let total_bombs = 10;
 let game_over = false;
 let cell;
-let neighbour_bombs = 0;
-let interruptor = false;
-let bomb_logo = "&#x1F4A3";
+let bomb_emoji = "&#x1F4A3";
 let flag_logo = "&#x1F6A9";
 let questionmark_logo = "&#x2753";
 let cells_revealed =0;
@@ -85,7 +83,7 @@ function  create_cells_status(){
     }    
 }
 
-function display_board(){
+function create_board(){
     for (let i = 0; i < rows_in_the_board; i++) {
         rows_div = document.createElement("div");
         rows_div.id= "row" +i.toString();
@@ -98,35 +96,40 @@ function display_board(){
             columns_div.classList.add("hiddencells");
             columns_div.classList.add("cells");
             columns_div.id= id_cell;
-
-            columns_div.addEventListener("click", (event) => {
-                let id = event.target.id;
-                row_column = id.split("-");
-                if (!array_cells_status[row_column[0]][row_column[1]].is_revealed) {
-                    array_cells_status[row_column[0]][row_column[1]].is_revealed = true;
-                    if (!array_cells_status[row_column[0]][row_column[1]].is_mine) {
-                        reveal_normal_cell_in_board(id);
-                    }else{
-                        revel_bomb_cell_in_board(id);
-                        display_sad_face();
-                        game_over= true;
-                    }
-                    check_game_status();
-                   
-                }
-            });
-
-            columns_div.addEventListener("contextmenu", (event) => {
-                event.preventDefault();
-                let id = event.target.id;
-                row_column = id.split("-");
-                if (!array_cells_status[row_column[0]][row_column[1]].is_revealed) {
-                    place_tag(id)
-                }
-            });
-            document.getElementById("row"+i.toString()).append(columns_div);           
+            document.getElementById("row"+i.toString()).append(columns_div);     
+            reveal_a_cell();
+            tag_a_cell();         
         }
     }
+}
+
+function tag_a_cell(params) {
+    columns_div.addEventListener("contextmenu", (event) => {
+        event.preventDefault();
+        let id = event.target.id;
+        row_column = id.split("-");
+        if (!array_cells_status[row_column[0]][row_column[1]].is_revealed) {
+            place_tag(id)
+        }
+    });
+}
+function reveal_a_cell() {
+    columns_div.addEventListener("click", (event) => {
+        let id = event.target.id;
+        row_column = id.split("-");
+        if (!array_cells_status[row_column[0]][row_column[1]].is_revealed) {
+            array_cells_status[row_column[0]][row_column[1]].is_revealed = true;
+            if (!array_cells_status[row_column[0]][row_column[1]].is_mine) {
+                reveal_normal_cell_in_board(id);
+            }else{
+                revel_bomb_cell_in_board(id);
+                display_sad_face();
+                game_over= true;
+            }
+            check_game_status();
+           
+        }
+    }); 
 }
 
 function check_game_status() {
@@ -297,7 +300,7 @@ function revel_bomb_cell_in_board(id) {
     cell.classList.add("reveledcells");
     cell.classList.add("reveledbomb");
     cell.classList.remove("hiddencells");
-    cell.innerHTML = bomb_logo;
+    cell.innerHTML = bomb_emoji;
     all_bombs_are_revealed();
 }
 
@@ -343,7 +346,6 @@ function reset_minesweeper() {
     document.getElementById("timer").innerHTML = segundos;
     bomb_counter = 0;
     game_over = false;
-    neighbour_bombs = 0;
     cells_revealed = 0;
     timer = false;
     enable_click();
@@ -352,7 +354,7 @@ function reset_minesweeper() {
     create_cells_status();
     place_bombs_in_board();
     count_neighbour_bombs(); 
-    display_board();
+    create_board();
     reset_clicking_face();
 }
 
@@ -368,7 +370,7 @@ window.onload = function () {
     create_cells_status();
     place_bombs_in_board();
     count_neighbour_bombs(); 
-    display_board();
+    create_board();
     reset_clicking_face();
     console.log(array_cells_status);
 };
