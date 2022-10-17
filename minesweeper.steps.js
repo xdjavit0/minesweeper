@@ -180,5 +180,21 @@ Then('the user should win',async function () {
 Then('the image should display an {string} face',async function (string) { 
 	let face = await page.locator('#face');
 	face= await face.innerText();
-	expect(face).toBe("happy");
+	expect(face).toBe(string);
+});
+
+When('the user press on the image display',async function () {
+	await buttonClick("face");
+});
+
+Then('the face image should be {string} face',async function (string) {
+	let face = await page.locator('#face');
+	face= await face.innerText();
+	expect(face).toBe(string);
+});
+
+Then('all squares should be disabled',async function () {
+	let locator =await page.locator('[id="board"]');
+	locator =await locator.getAttribute("class");
+	expect(locator.includes("noclick")).toBeTruthy();
 });

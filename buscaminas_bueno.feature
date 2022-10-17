@@ -126,9 +126,6 @@ And the square "2-0" should be "2"
 And the square "2-1" should be "3"
 And the square "2-2" should be "2"
 
-
-
-
 Scenario: An empty square revealed by a neightbour square, the adjancent squares should be revealed //
 Given the user charge the data "*****-*ooo*-*ooo*-*ooo*-*****"
 When the user click the square "2-2"
@@ -190,23 +187,24 @@ Then the image should display an "happy" face
 # And add a second to the counter every second passed
 
 Scenario: The user reset the board
-Giventhe user charge the data "o***oo"
+Given the user charge the data "o***oo"
 And the user tag the "0-1"
 And the user click the square "0-4"
 When the user press on the image display
-Then the board should change to default board
+Then the board should have "6" and "1"
+And all the squares should be hidden
 
-# Scenario: The user reset the non marked bomb counter
-# Given the user charge the data "o*****"
-# And the user tag the "0-2"
-# When the user press on the image display
-# Then the non marked non marked bomb counter should be "5"
+Scenario: The user reset the non marked bomb counter
+Given the user charge the data "o*****"
+And the user tag the "0-2"
+When the user press on the image display
+Then the non marked bomb counter display should show the following value: "5"
 
-# Scenario: The user reset the face image --> should be serious
-# Given # Given the user charge the data "o*****"
-# And the user click the square "0-4"
-# When the user press on the image display
-# Then the face image should be "serious" face
+Scenario: The user reset the face image --> should be serious
+Given the user charge the data "o*****"
+And the user click the square "0-4"
+When the user press on the image display
+Then the face image should be "serious" face
 
 # @manual
 # Scenario: The user reset the timer
@@ -214,12 +212,12 @@ Then the board should change to default board
 # When the user press on the image display
 # Then the timer display should be "empty"
 
-# Scenario Outline: User win or loose and the board squares turn disabled //
-# Given the user charge the data "o*"
-# When the user press the square "<square>"
-# Then all squares should be disabled
+Scenario Outline: User win or loose and the board squares turn disabled
+Given the user charge the data "o*"
+When the user click the square "<square>"
+Then all squares should be disabled
 
-# Example:
-# |square|
-# |1-1   |
-# |1-2   |
+Examples:
+|square|
+|0-0   |
+|0-1   |

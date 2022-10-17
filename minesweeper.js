@@ -337,6 +337,8 @@ function delete_board() {
 }
 
 function reset_minesweeper() {
+    face = document.getElementById("face");
+    face.innerHTML = "serious";
     segundos = 0;
     document.getElementById("timer").innerHTML = segundos;
     bomb_counter = 0;
