@@ -25,7 +25,7 @@ function get_mockdata_if_needed() {
         columns_in_the_board=mockdata[0].length;
         return mockdata;
     }else{
-        return[];
+        return null;
     }
 }
 
@@ -57,7 +57,7 @@ function update_bomb_counter_display() {
 }
 
 function place_bombs_in_board(mockdata) {
-    if (mockdata != []) {
+    if (mockdata != null) {
         place_bombs_mockdata(mockdata);
     }else{
         place_bombs_random();
